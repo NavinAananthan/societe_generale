@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload and Analysis</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            /*background: linear-gradient(to bottom, #000000, #1e1e1e);*/
+            background: #EEEEEE;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column; /* Stack items vertically */
+        }
+        .container {
+            background-color: #F6F5F2;            
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px; /* Add margin to separate from the title */
+        }
+        h1 {
+            color: #007f73;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-control-file {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .btn-custom {
+            background-color: #007f73; /* Purple color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: opacity 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+        }
+        .btn-custom:hover {
+            opacity: 0.9;
+        }
+        footer {
+            color: #777;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Upload and Analysis</h1>
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {{form.file(class="form-control-file")}}
+            </div>
+            <div class="form-group">
+                {{form.submit(class="btn-custom")}}
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #EEEEEE;
+            background-size: 100%;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x:auto; /* Hide horizontal scrollbar */
+            overflow-y: auto;
+            /*height: 100vh;  Full viewport height */
+        }
+        h1 {
+            color: #007f73;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+            font-family: 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+        }
+        .sidebar {
+            position: fixed;
+            overflow: auto;
+            left: 0;
+            top: 0; /* Adjust starting position from top */
+            height: 100%; /* Take full height minus top margin */
+            width: 200px;
+            background-color: #007f73; /* Purple color */
+            padding-top: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li {
+            text-align: center;
+            margin-bottom: 5px;
+            margin-top: 5px; /* Adjust top margin to lower the list */
+        }
+        .sidebar button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007f73; /* Purple color */
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+        .sidebar button:hover {
+            background-color: #55ad9b; /* Darker purple on hover */
+        }
+        .content {
+            margin-left: 200px; /* Adjust to match sidebar width */
+            padding: 20px;
+            color: #007f73;
+        }
+        .content li{
+            color: #000;
+        }
+        .center-box {
+            border: 2px dotted #007f73; /* Purple outline */
+            padding: 100px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 60px; /* Add margin to separate from the title */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .file-icon {
+            font-size: 100px; /* Larger icon size */
+            color: #007f73; /* Purple color */
+            margin-bottom: 20px; /* Spacing between icon and text */
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            width: 100px;
+            height: 35px;
+            border-radius: 10px;
+            background-color: #007f73; /* Purple color */
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="location.href='/'">Home</button>
+    <div class="sidebar">
+        <ul>
+            <li><button onclick="location.href='/analyze/flow?filename={{ filename }}'">Data Flow & Process Flow</button></li>
+            <li><button onclick="location.href='/analyze/dataflowDiagram?filename={{ filename }}'">Data Flow Diagram</button></li>
+            <li><button onclick="location.href='/analyze/processflowDiagram?filename={{ filename }}'">Process Flow Diagram</button></li>
+            <li><button onclick="location.href='/analyze/logic?filename={{ filename }}'">Explain Logic</button></li>
+            <li><button onclick="location.href='/analyze/listmacro?filename={{ filename }}'">List the VBA Macros</button></li>
+            <li><button onclick="location.href='/analyze/NLPexplain?filename={{ filename }}'">Natural Language Explanation</button></li>
+            <li><button onclick="location.href='/analyze/efficiency?filename={{ filename }}'">Efficiency Analyzer</button></li>
+            <li><button onclick="location.href='/analyze/errordetection?filename={{ filename }}'">Error Detection</button></li>
+            <li><button onclick="location.href='/analyze/conversion?filename={{ filename }}'">Macro Code Conversion</button></li>
+            <li><button onclick="location.href='/analyze/security?filename={{ filename }}'">Security & Compliance</button></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="text-center">
+            {% if filename %}
+            <i class="far fa-file-alt file-icon"></i>
+            <p>File Name: {{ filename }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {% if dataFlow %}
+            <div>
+                <h2>Data Flow Process</h2>
+                <ul>
+                    {% for item in dataFlow %}
+                        {% for pt in item %}
+                            <li>{{ pt | safe }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            {% if processFlow %}
+            <div>
+                <h2>Process Flow</h2>
+                <ul>
+                    {% for item in processFlow %}
+                        {% for pt in item %}
+                            <li>{{ pt | safe }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            {% if logic  %}
+            <div>
+                <h2>Functional Logic Behind the Macro</h2>
+                <ul>
+                    {% for item in logic %}
+                        <li>{{ item | safe }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            {% if vbaCodes %}
+            <div>
+                <h2>Listing Macro Code</h2>
+                <ul>
+                    {% for item in vbaCodes %}
+                        <li>{{ item | replace('\n', '<br>') | safe }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if efficiencyData %}
+            <div>
+                <h2>Code Quality and Efficiency</h2>
+                <ul>
+                    {% for item in efficiencyData %}
+                        <li>{{ item | safe }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if errors %}
+            <div>
+                <h2>Error Detection and Correction</h2>
+                <ul>
+                    {% for item in errors %}
+                        {% for pt in item %}
+                            <li>{{ pt | safe }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if conversionData %}
+            <div>
+                <h2>Converted Code</h2>
+                <ul>
+                    {% for item in conversionData %}
+                        <li>{{ item | replace('\n', '<br>') | safe }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if suspiciousKeywords %}
+            <div>
+                <h2>Suscipious Keywords</h2>
+                <ul>
+                    {% for item in suspiciousKeywords %}
+                        {% for pt in item %}
+                            <li>{{ pt | safe }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if suspiciousPatterns %}
+            <div>
+                <h2>Suscipious Patterns</h2>
+                <ul>
+                    {% for item in suspiciousPatterns %}
+                        {% for pt in item %}
+                            <li>{{ pt | safe }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if nlpContent %}
+            <div>
+                <h2>NLP Content</h2>
+                <ul>
+                    {% for item in nlpContent %}
+                        <li>{{ item | safe }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if dataDiagram %}
+                <h1>Data Flow Diagram</h1>
+                <img src= "{{url_for('static', filename='flow_diagram.png')}}" >
+            {% endif %}
+        </div>
+
+        <div>
+            {% if processDiagram %}
+                <h1>Process Flow Diagram</h1>
+                <img src= "{{url_for('static', filename='flow_diagram.png')}}" >
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>

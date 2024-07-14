@@ -1,0 +1,243 @@
+
+Unused terminals:
+
+    OPERATOR
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> subroutine
+Rule 2     program -> function
+Rule 3     subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD
+Rule 4     function -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD
+Rule 5     statements -> statement
+Rule 6     statements -> statement statements
+Rule 7     statement -> expression_statement
+Rule 8     statement -> END_STATEMENT
+Rule 9     expression_statement -> expression END_STATEMENT
+Rule 10    expression -> STRING
+Rule 11    expression -> NUMBER
+Rule 12    expression -> IDENTIFIER
+
+Terminals, with rules where they appear
+
+END_KEYWORD          : 3 4
+END_STATEMENT        : 8 9
+IDENTIFIER           : 3 4 12
+KEYWORD              : 3 4
+LPAREN               : 3 4
+NUMBER               : 11
+OPERATOR             : 
+RPAREN               : 3 4
+STRING               : 10
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 9
+expression_statement : 7
+function             : 2
+program              : 0
+statement            : 5 6
+statements           : 3 4 6
+subroutine           : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . subroutine
+    (2) program -> . function
+    (3) subroutine -> . KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD
+    (4) function -> . KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD
+
+    KEYWORD         shift and go to state 4
+
+    program                        shift and go to state 1
+    subroutine                     shift and go to state 2
+    function                       shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> subroutine .
+
+    $end            reduce using rule 1 (program -> subroutine .)
+
+
+state 3
+
+    (2) program -> function .
+
+    $end            reduce using rule 2 (program -> function .)
+
+
+state 4
+
+    (3) subroutine -> KEYWORD . IDENTIFIER LPAREN RPAREN statements END_KEYWORD
+    (4) function -> KEYWORD . IDENTIFIER LPAREN RPAREN statements END_KEYWORD
+
+    IDENTIFIER      shift and go to state 5
+
+
+state 5
+
+    (3) subroutine -> KEYWORD IDENTIFIER . LPAREN RPAREN statements END_KEYWORD
+    (4) function -> KEYWORD IDENTIFIER . LPAREN RPAREN statements END_KEYWORD
+
+    LPAREN          shift and go to state 6
+
+
+state 6
+
+    (3) subroutine -> KEYWORD IDENTIFIER LPAREN . RPAREN statements END_KEYWORD
+    (4) function -> KEYWORD IDENTIFIER LPAREN . RPAREN statements END_KEYWORD
+
+    RPAREN          shift and go to state 7
+
+
+state 7
+
+    (3) subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN . statements END_KEYWORD
+    (4) function -> KEYWORD IDENTIFIER LPAREN RPAREN . statements END_KEYWORD
+    (5) statements -> . statement
+    (6) statements -> . statement statements
+    (7) statement -> . expression_statement
+    (8) statement -> . END_STATEMENT
+    (9) expression_statement -> . expression END_STATEMENT
+    (10) expression -> . STRING
+    (11) expression -> . NUMBER
+    (12) expression -> . IDENTIFIER
+
+    END_STATEMENT   shift and go to state 12
+    STRING          shift and go to state 14
+    NUMBER          shift and go to state 15
+    IDENTIFIER      shift and go to state 8
+
+    statements                     shift and go to state 9
+    statement                      shift and go to state 10
+    expression_statement           shift and go to state 11
+    expression                     shift and go to state 13
+
+state 8
+
+    (12) expression -> IDENTIFIER .
+
+    END_STATEMENT   reduce using rule 12 (expression -> IDENTIFIER .)
+
+
+state 9
+
+    (3) subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN statements . END_KEYWORD
+    (4) function -> KEYWORD IDENTIFIER LPAREN RPAREN statements . END_KEYWORD
+
+    END_KEYWORD     shift and go to state 16
+
+
+state 10
+
+    (5) statements -> statement .
+    (6) statements -> statement . statements
+    (5) statements -> . statement
+    (6) statements -> . statement statements
+    (7) statement -> . expression_statement
+    (8) statement -> . END_STATEMENT
+    (9) expression_statement -> . expression END_STATEMENT
+    (10) expression -> . STRING
+    (11) expression -> . NUMBER
+    (12) expression -> . IDENTIFIER
+
+    END_KEYWORD     reduce using rule 5 (statements -> statement .)
+    END_STATEMENT   shift and go to state 12
+    STRING          shift and go to state 14
+    NUMBER          shift and go to state 15
+    IDENTIFIER      shift and go to state 8
+
+    statement                      shift and go to state 10
+    statements                     shift and go to state 17
+    expression_statement           shift and go to state 11
+    expression                     shift and go to state 13
+
+state 11
+
+    (7) statement -> expression_statement .
+
+    END_STATEMENT   reduce using rule 7 (statement -> expression_statement .)
+    STRING          reduce using rule 7 (statement -> expression_statement .)
+    NUMBER          reduce using rule 7 (statement -> expression_statement .)
+    IDENTIFIER      reduce using rule 7 (statement -> expression_statement .)
+    END_KEYWORD     reduce using rule 7 (statement -> expression_statement .)
+
+
+state 12
+
+    (8) statement -> END_STATEMENT .
+
+    END_STATEMENT   reduce using rule 8 (statement -> END_STATEMENT .)
+    STRING          reduce using rule 8 (statement -> END_STATEMENT .)
+    NUMBER          reduce using rule 8 (statement -> END_STATEMENT .)
+    IDENTIFIER      reduce using rule 8 (statement -> END_STATEMENT .)
+    END_KEYWORD     reduce using rule 8 (statement -> END_STATEMENT .)
+
+
+state 13
+
+    (9) expression_statement -> expression . END_STATEMENT
+
+    END_STATEMENT   shift and go to state 18
+
+
+state 14
+
+    (10) expression -> STRING .
+
+    END_STATEMENT   reduce using rule 10 (expression -> STRING .)
+
+
+state 15
+
+    (11) expression -> NUMBER .
+
+    END_STATEMENT   reduce using rule 11 (expression -> NUMBER .)
+
+
+state 16
+
+    (3) subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD .
+    (4) function -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD .
+
+  ! reduce/reduce conflict for $end resolved using rule 3 (subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD .)
+    $end            reduce using rule 3 (subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD .)
+
+  ! $end            [ reduce using rule 4 (function -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD .) ]
+
+
+state 17
+
+    (6) statements -> statement statements .
+
+    END_KEYWORD     reduce using rule 6 (statements -> statement statements .)
+
+
+state 18
+
+    (9) expression_statement -> expression END_STATEMENT .
+
+    END_STATEMENT   reduce using rule 9 (expression_statement -> expression END_STATEMENT .)
+    STRING          reduce using rule 9 (expression_statement -> expression END_STATEMENT .)
+    NUMBER          reduce using rule 9 (expression_statement -> expression END_STATEMENT .)
+    IDENTIFIER      reduce using rule 9 (expression_statement -> expression END_STATEMENT .)
+    END_KEYWORD     reduce using rule 9 (expression_statement -> expression END_STATEMENT .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 16 resolved using rule (subroutine -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD)
+WARNING: rejected rule (function -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD) in state 16
+WARNING: Rule (function -> KEYWORD IDENTIFIER LPAREN RPAREN statements END_KEYWORD) is never reduced
