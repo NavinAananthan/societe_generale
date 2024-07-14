@@ -12,7 +12,7 @@ import re
 import os
 
 
-api_key = '64wUhjlxSNuEnCyOcFc8YXih27ople1p'
+api_key = 'API-KEY'
 client = MistralClient(api_key=api_key)
 model = "mistral-large-latest"
 
